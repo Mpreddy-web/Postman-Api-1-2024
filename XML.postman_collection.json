@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "09b14749-043e-418a-8aef-36b0207b0bdd",
+		"name": "XML",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23774474"
+	},
+	"item": [
+		{
+			"name": "GET-All user details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test the Response status code\r",
+							"pm.test(\"Status code is 200\",  () =>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//Content-Type Heraders Present or not\r",
+							"pm.test(\"Content-Type is present\",  () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"//Content-Type Heraders key values correct or not\r",
+							"pm.test(\"Content-Type header is application/xml\",  () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/xml; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"//Test cookie present or not\r",
+							"pm.test(\"cookie 'K-Action' is Present\",()=>{\r",
+							"    pm.expect(pm.cookies.has('K-Action'));\r",
+							"});\r",
+							"\r",
+							"//Test Cookie key & Value\r",
+							"pm.test(\"cookie K-Action is MPR\",()=>{\r",
+							"    pm.expect(pm.cookies.get('K-Action')).to.eql('MPR');\r",
+							"});\r",
+							"\r",
+							"//Test response time\r",
+							"pm.test(\"Response time is less than 20000ms\", ()=> {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"//Test Status code value(created,successful etc)\r",
+							"pm.test(\"Status code name has string\", ()=> {\r",
+							"    pm.response.to.have.status(\"OK\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Cookie-K-Action",
+						"value": "MPR",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://thetestrequest.com/authors.xml",
+					"protocol": "https",
+					"host": [
+						"thetestrequest",
+						"com"
+					],
+					"path": [
+						"authors.xml"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Single user details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://thetestrequest.com/authors/1.xml",
+					"protocol": "https",
+					"host": [
+						"thetestrequest",
+						"com"
+					],
+					"path": [
+						"authors",
+						"1.xml"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "97efcb5b-8aa4-4368-88e1-70bf9c445d1e",
+		"name": "REST API Testing for all users & single users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23774474"
+	},
+	"item": [
+		{
+			"name": "MY REST API",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.globals.get(\"variable_key\");\r",
+							"try {\r",
+							"    const response = await pm.sendRequest({\r",
+							"        url: \"https://postman-echo.com/get\",\r",
+							"        method: \"GET\"\r",
+							"    });\r",
+							"\r",
+							"    console.log(response.json());\r",
+							"} catch (err) {\r",
+							"    console.error(err);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single user details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.environment.get(\"Name\"));\r",
+							"pm.environment.set(\"Name\", \"Polireddy\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/1",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test the Response status code\r",
+							"pm.test(\"Status code is 201\",  () =>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"//Content-Type Headers Present or not\r",
+							"pm.test(\"Content-Type is present\",  () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"//Content-Type Headers key values correct or not\r",
+							"pm.test(\"Content-Type header is application/json\",  () => {\r",
+							"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json; charset=utf-8');\r",
+							"});\r",
+							"\r",
+							"//Test cookie present or not\r",
+							"pm.test(\"cookie 'K-Action' is Present\",()=>{\r",
+							"    pm.expect(pm.cookies.has('K-Action'));\r",
+							"});\r",
+							"\r",
+							"//Test Cookie key & Value\r",
+							"pm.test(\"cookie K-Action is MPR\",()=>{\r",
+							"    pm.expect(pm.cookies.get('K-Action')).to.eql('MPR');\r",
+							"});\r",
+							"\r",
+							"//Test response time\r",
+							"pm.test(\"Response time is less than 2000ms\", ()=> {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"//Test Response body or data\r",
+							"pm.test(\"Response body contains expected data\", () => {\r",
+							"    var responseBody = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseBody.Name).to.eql(\"Abc\");\r",
+							"    pm.expect(responseBody.DOB).to.eql(\"12-12-1999\");\r",
+							"    pm.expect(responseBody.Location).to.eql(\"Banglore\");\r",
+							"    pm.expect(responseBody.Phone).to.eql(\"1234567890\");\r",
+							"    pm.expect(responseBody.Skills).to.contain(\"API\");\r",
+							"    pm.expect(responseBody.Skills).to.contain(\"JIRA\");\r",
+							"    pm.expect(responseBody.Skills).to.contain(\"PYTHON\");\r",
+							"    pm.expect(responseBody.Skills).to.contain(\"MANUAL\");\r",
+							"});\r",
+							"\r",
+							"//Validating Json Schema\r",
+							"pm.test(\"Validate JSON Schema,responseBody\", () =>{\r",
+							"    var Ajv = require('ajv'); // Define Ajv here\r",
+							"    var ajv = new Ajv();\r",
+							"    var Schema={\r",
+							"        \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+							"        \"title\": \"UserSchema\",\r",
+							"        \"type\": \"object\",\r",
+							"        \"properties\": {\r",
+							"            \"Name\": {\r",
+							"                \"type\": \"string\"\r",
+							"            },\r",
+							"            \"DOB\": {\r",
+							"                \"type\": \"string\",\r",
+							"                \"pattern\": \"^\\\\d{2}-\\\\d{2}-\\\\d{4}$\" // Matches DD-MM-YYYY format\r",
+							"            },\r",
+							"            \"Location\": {\r",
+							"                \"type\": \"string\"\r",
+							"            },\r",
+							"            \"Phone\": {\r",
+							"                \"type\": \"string\",\r",
+							"                \"pattern\": \"^\\\\d{10}$\" // Matches 10-digit phone number format\r",
+							"            },\r",
+							"            \"Skills\": {\r",
+							"                \"type\": \"string\"\r",
+							"            },\r",
+							"            \"id\": {\r",
+							"                \"type\": \"string\"\r",
+							"            },\r",
+							"            \"createdAt\": {\r",
+							"                \"type\": \"string\",\r",
+							"                \"format\": \"date-time\"\r",
+							"            }\r",
+							"        },\r",
+							"        \"required\": [\"Name\", \"DOB\", \"Location\", \"Phone\", \"Skills\", \"id\", \"createdAt\"]\r",
+							"    }\r",
+							"    var validate = ajv.compile(Schema); // Use ajv to compile schema\r",
+							"     var responseBody = pm.response.json(); // Add response body variable\r",
+							"    var valid = validate(responseBody); // Validate the response body against schema\r",
+							"    pm.test('Schema is valid',()=>{\r",
+							"        pm.expect(valid).to.be.true; // Check if the validation result is true\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Cookie-K-Action",
+						"value": "MPR",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Abc\",\r\n    \"DOB\": \"12-12-1999\",\r\n    \"Location\":\"Banglore\",\r\n    \"Phone\":\"1234567890\",\r\n    \"Skills\":\"API,JIRA,PYTHON,MANUAL etc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Post User",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie-K-Action",
+								"value": "null",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\":\"Abc\",\r\n    \"DOB\":\"12-12-1999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://reqres.in/api/users",
+							"protocol": "https",
+							"host": [
+								"reqres",
+								"in"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 08 Sep 2024 06:36:47 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "83"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Report-To",
+							"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1725777407&sid=c4c9725f-1ab0-44d8-820f-430df2718e11&s=%2BdhoC0eU%2Fpc4QWBSBs%2FKXkwNEmr4r9wCAnhJhCD9tCE%3D\"}]}"
+						},
+						{
+							"key": "Reporting-Endpoints",
+							"value": "heroku-nel=https://nel.heroku.com/reports?ts=1725777407&sid=c4c9725f-1ab0-44d8-820f-430df2718e11&s=%2BdhoC0eU%2Fpc4QWBSBs%2FKXkwNEmr4r9wCAnhJhCD9tCE%3D"
+						},
+						{
+							"key": "Nel",
+							"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Etag",
+							"value": "W/\"53-8C+g2wTy+0ZWR6nuMTwZIJq1xa4\""
+						},
+						{
+							"key": "Via",
+							"value": "1.1 vegur"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "CF-RAY",
+							"value": "8bfced1adece3af2-BOM"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Name\": \"Abc\",\n    \"DOB\": \"12-12-1999\",\n    \"id\": \"672\",\n    \"createdAt\": \"2024-09-08T06:36:47.387Z\"\n}"
+				}
+			]
+		},
+		{
+			"name": "By name get details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Test cookie present or not\r",
+							"pm.test(\"Cookie has no name or value\",()=>{\r",
+							"    pm.expect(pm.cookies.has('null')).to.be.false;\r",
+							"});\r",
+							"\r",
+							"//Test Cookie key & Value\r",
+							"pm.test(\"Check if cookie 'myCookie' has no value\",()=>{\r",
+							"     pm.expect(pm.cookies.has('myCookie')).to.be.false;\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

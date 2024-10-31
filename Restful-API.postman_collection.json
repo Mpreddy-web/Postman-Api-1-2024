@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "4af2dabf-d0e7-478c-a0ac-6e83d8bba433",
+		"name": "Restful-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23774474"
+	},
+	"item": [
+		{
+			"name": "For All Users details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "For Single user Details by email",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users?email=Sincere@april.biz",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "Sincere@april.biz"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\":\"Abc\",\r\n    \"DOB\":\"12-12-1999\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/posts",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "single user details by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Validate Json Schema\r",
+							"pm.test(\"Validate JSON Schema,responseBody\", () =>{\r",
+							"    var Ajv = require('ajv'); // Define Ajv here\r",
+							"    var ajv = new Ajv();\r",
+							"    var Schema={\r",
+							"        \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+							"        \"title\": \"Generated schema for Root\",\r",
+							"        \"type\": \"object\",\r",
+							"        \"properties\": {\r",
+							"            //... (schema properties)\r",
+							"        },\r",
+							"        \"required\": [\r",
+							"            //... (required properties)\r",
+							"        ]\r",
+							"    };\r",
+							"    var validate = ajv.compile(Schema); // Use Ajv to compile schema\r",
+							"    var responseBody = pm.response.json(); // Add response body variable\r",
+							"    var valid = validate(responseBody); // Validate the response body against schema\r",
+							"    pm.test('Schema is valid',()=>{\r",
+							"        pm.expect(valid).to.be.true; // Check if the validation result is true\r",
+							"    });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://jsonplaceholder.typicode.com/users/1",
+					"protocol": "https",
+					"host": [
+						"jsonplaceholder",
+						"typicode",
+						"com"
+					],
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

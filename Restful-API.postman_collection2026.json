@@ -1,0 +1,394 @@
+{
+  "info": {
+    "_postman_id": "4af2dabf-d0e7-478c-a0ac-6e83d8bba433",
+    "name": "Restful-API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23774474",
+    "_collection_link": "https://go.postman.co/collection/23774474-4af2dabf-d0e7-478c-a0ac-6e83d8bba433?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "For All Users details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Parse the response body as JSON\r",
+              "var responseJson = pm.response.json();\r",
+              "\r",
+              "// Specify the IDs of the users you're interested in\r",
+              "var userIds = [1, 2, 7, 10];\r",
+              "\r",
+              "// Filter the response to find the users with the specified IDs\r",
+              "var selectedUsers = responseJson.filter(function(user) {\r",
+              "    return userIds.includes(user.id);\r",
+              "});\r",
+              "\r",
+              "// Log the details of the selected users\r",
+              "selectedUsers.forEach(function(user) {\r",
+              "    console.log(\"User ID: \" + user.id);\r",
+              "    console.log(\"Name: \" + user.name);\r",
+              "    console.log(\"Email: \" + user.email);\r",
+              "    console.log(\"Username: \" + user.username);\r",
+              "    console.log(\"Phone: \" + user.phone);\r",
+              "});\r",
+              "\r",
+              "// Test Response body or data\r",
+              "pm.test(\"Response body contains expected data for User 1 and User 2\", () => {\r",
+              "    var responseBody = pm.response.json();\r",
+              "\r",
+              "    // Test for User 1\r",
+              "    var user1 = responseBody.find(user => user.id === 1);\r",
+              "    pm.expect(user1.name).to.eql(\"Leanne Graham\");\r",
+              "    pm.expect(user1.username).to.eql(\"Bret\");\r",
+              "    pm.expect(user1.email).to.eql(\"Sincere@april.biz\");\r",
+              "    pm.expect(user1.phone).to.eql(\"1-770-736-8031 x56442\");\r",
+              "    pm.expect(user1.address.city).to.eql(\"Gwenborough\");\r",
+              "    pm.expect(user1.address.zipcode).to.eql(\"92998-3874\");\r",
+              "\r",
+              "    // Test for User 2\r",
+              "    var user2 = responseBody.find(user => user.id === 2);\r",
+              "    pm.expect(user2.name).to.eql(\"Ervin Howell\");\r",
+              "    pm.expect(user2.username).to.eql(\"Antonette\");\r",
+              "    pm.expect(user2.email).to.eql(\"Shanna@melissa.tv\");\r",
+              "    pm.expect(user2.phone).to.eql(\"010-692-6593 x09125\");\r",
+              "    pm.expect(user2.address.city).to.eql(\"Wisokyburgh\");\r",
+              "    pm.expect(user2.address.zipcode).to.eql(\"90566-7771\");\r",
+              "});\r",
+              "\r",
+              "// Schema validation\r",
+              "//Validate Json Schema\r",
+              "pm.test(\"Validate JSON Schema,responseBody\", () =>{\r",
+              "    var Ajv = require('ajv'); // Define Ajv here\r",
+              "    var ajv = new Ajv();\r",
+              "    var Schema={\r",
+              "  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "  \"title\": \"Generated schema for Root\",\r",
+              "  \"type\": \"array\",\r",
+              "  \"items\": {\r",
+              "    \"type\": \"object\",\r",
+              "    \"properties\": {\r",
+              "      \"id\": {\r",
+              "        \"type\": \"number\"\r",
+              "      },\r",
+              "      \"name\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"username\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"email\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"address\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"street\": {\r",
+              "            \"type\": \"string\"\r",
+              "          },\r",
+              "          \"suite\": {\r",
+              "            \"type\": \"string\"\r",
+              "          },\r",
+              "          \"city\": {\r",
+              "            \"type\": \"string\"\r",
+              "          },\r",
+              "          \"zipcode\": {\r",
+              "            \"type\": \"string\"\r",
+              "          },\r",
+              "          \"geo\": {\r",
+              "            \"type\": \"object\",\r",
+              "            \"properties\": {\r",
+              "              \"lat\": {\r",
+              "                \"type\": \"string\"\r",
+              "              },\r",
+              "              \"lng\": {\r",
+              "                \"type\": \"string\"\r",
+              "              }\r",
+              "            },\r",
+              "            \"required\": [\r",
+              "              \"lat\",\r",
+              "              \"lng\"\r",
+              "            ]\r",
+              "          }\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "          \"street\",\r",
+              "          \"suite\",\r",
+              "          \"city\",\r",
+              "          \"zipcode\",\r",
+              "          \"geo\"\r",
+              "        ]\r",
+              "      },\r",
+              "      \"phone\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"website\": {\r",
+              "        \"type\": \"string\"\r",
+              "      },\r",
+              "      \"company\": {\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "          \"name\": {\r",
+              "            \"type\": \"string\"\r",
+              "          },\r",
+              "          \"catchPhrase\": {\r",
+              "            \"type\": \"string\"\r",
+              "          },\r",
+              "          \"bs\": {\r",
+              "            \"type\": \"string\"\r",
+              "          }\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "          \"name\",\r",
+              "          \"catchPhrase\",\r",
+              "          \"bs\"\r",
+              "        ]\r",
+              "      }\r",
+              "    },\r",
+              "    \"required\": [\r",
+              "      \"id\",\r",
+              "      \"name\",\r",
+              "      \"username\",\r",
+              "      \"email\",\r",
+              "      \"address\",\r",
+              "      \"phone\",\r",
+              "      \"website\",\r",
+              "      \"company\"\r",
+              "    ]\r",
+              "  }\r",
+              "};\r",
+              "    var validate = ajv.compile(Schema); // Use Ajv to compile schema\r",
+              "    var responseBody = pm.response.json(); // Add response body variable\r",
+              "    var valid = validate(responseBody); // Validate the response body against schema\r",
+              "    pm.test('Schema is valid',()=>{\r",
+              "        pm.expect(valid).to.be.true; // Check if the validation result is true\r",
+              "    });\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "For Single user Details by email",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users?email=Sincere@april.biz",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ],
+          "query": [
+            {
+              "key": "email",
+              "value": "Sincere@april.biz"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Parse the response body to JSON\r",
+              "var responseJson = pm.response.json();\r",
+              "\r",
+              "// Capture the individual details and store them directly in collection variables\r",
+              "pm.collectionVariables.set(\"id\", responseJson.id);    // Store 'id' in collection variables\r",
+              "pm.collectionVariables.set(\"Name\", responseJson.Name); // Store 'Name' in collection variables\r",
+              "\r",
+              "// Log the captured values for verification\r",
+              "console.log(\"Captured customer details:\");\r",
+              "console.log(pm.collectionVariables.get(\"id\"));\r",
+              "console.log(pm.collectionVariables.get(\"Name\"));\r",
+              "\r",
+              "// Test for the correct Customer ID format\r",
+              "pm.test(\"Customer ID has a valid format\", function () {\r",
+              "    pm.expect(responseJson.id).to.be.a('number');\r",
+              "});\r",
+              "// Validate Customer ID/Number\r",
+              "pm.test(\"Customer ID is correct\", function () {\r",
+              "    pm.expect(pm.response.json().id.toString()).to.eql(\"101\");\r",
+              "});\r",
+              "// validate Customer Name\r",
+              "pm.test(\"Customer Name is correct\", function () {\r",
+              "    pm.expect(pm.response.json().Name).to.eql(\"Abc\");\r",
+              "});\r",
+              "\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\":101,\r\n    \"Name\":\"Abc\",\r\n    \"Location\":\"India-Bangalore\",\r\n    \"DOB\":\"12-12-1999\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/posts",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "single user details by id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "//Validate Json Schema\r",
+              "pm.test(\"Validate JSON Schema,responseBody\", () =>{\r",
+              "    var Ajv = require('ajv'); // Define Ajv here\r",
+              "    var ajv = new Ajv();\r",
+              "    var Schema={\r",
+              "        \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r",
+              "        \"title\": \"Generated schema for Root\",\r",
+              "        \"type\": \"object\",\r",
+              "        \"properties\": {\r",
+              "            //... (schema properties)\r",
+              "        },\r",
+              "        \"required\": [\r",
+              "            //... (required properties)\r",
+              "        ]\r",
+              "    };\r",
+              "    var validate = ajv.compile(Schema); // Use Ajv to compile schema\r",
+              "    var responseBody = pm.response.json(); // Add response body variable\r",
+              "    var valid = validate(responseBody); // Validate the response body against schema\r",
+              "    pm.test('Schema is valid',()=>{\r",
+              "        pm.expect(valid).to.be.true; // Check if the validation result is true\r",
+              "    });\r",
+              "});\r",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "packages": {},
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/1",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "id",
+      "value": ""
+    },
+    {
+      "key": "Name",
+      "value": ""
+    }
+  ]
+}
